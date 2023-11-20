@@ -6,7 +6,7 @@ import os
 # importando os elementos definidos no modelo
 from model.base import Base
 from model.comentario import Comentario
-from model.produto import Produto
+from model.tecnica import Tecnica
 
 db_path = "database/"
 # Verifica se o diretorio não existe

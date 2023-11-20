@@ -1,8 +1,8 @@
-# Minha API
+# BJJ Training Log API
 
-Este pequeno projeto faz parte do material diático da Disciplina **Desenvolvimento Full Stack Básico** 
+Este pequeno projeto constitui o MVP a ser apresentado à disciplina **Desenvolvimento Full Stack Básico** 
 
-O objetivo aqui é ilutsrar o conteúdo apresentado ao longo das três aulas da disciplina.
+## Objetivo
 
 ---
 ## Como executar 
