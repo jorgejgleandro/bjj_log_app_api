@@ -15,7 +15,7 @@ class NivelEnum(PyEnum):
 NivelTipo = Enum(
     NivelEnum,
     nome="nivel_tipo",
-    valores=lambda obj: [item.value for item in obj],
+    values_callable=lambda obj: [item.value for item in obj],
 )
 
 
@@ -50,9 +50,6 @@ class Tecnica(Base):
         self.nivel = nivel
         self.video = video
 
-        # se não for informada, será a data exata a da inserção no banco
-        if data_insercao:
-            self.data_insercao = data_insercao
 
     def adiciona_comentario(self, comentario:Comentario):
         """ Adiciona um novo comentário à técnica

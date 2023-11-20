@@ -1,12 +1,13 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from model.tecnica import Tecnica, NivelEnum
+from flask import jsonify
 
 from schemas import ComentarioSchema
 
 
 class TecnicaSchema(BaseModel):
-    """ Define como um novo Tecnica a ser inserido deve ser representado
+    """ Define como uma nova Tecnica a ser inserida deve ser representada
     """
     nome: str = "Chave reta"
     descricao: str = "Chave reta na montada"
@@ -22,13 +23,13 @@ class TecnicaBuscaSchema(BaseModel):
 
 
 class ListagemTecnicasSchema(BaseModel):
-    """ Define como uma listagem de tecnicas será retornada.
+    """ Define como uma listagem de tecnicas será devolvida.
     """
     tecnicas:List[TecnicaSchema]
 
 
 def apresenta_tecnicas(tecnicas: List[Tecnica]):
-    """ Retorna uma representação do tecnica seguindo o schema definido em
+    """ Devolve uma representação da tecnica seguindo o schema definido em
         TecnicaViewSchema.
     """
     result = []
@@ -44,7 +45,7 @@ def apresenta_tecnicas(tecnicas: List[Tecnica]):
 
 
 class TecnicaViewSchema(BaseModel):
-    """ Define como um tecnica será retornado: tecnica + comentários.
+    """ Define como um tecnica será devolvida: tecnica + comentários.
     """
     id: int = 1
     nome: str = "Chave Reta"
@@ -63,14 +64,14 @@ class TecnicaDelSchema(BaseModel):
     nome: str
 
 def apresenta_tecnica(tecnica: Tecnica):
-    """ Retorna uma representação do tecnica seguindo o schema definido em
+    """ Devolve uma representação da tecnica seguindo o schema definido em
         TecnicaViewSchema.
     """
     return {
         "id": tecnica.id,
         "nome": tecnica.nome,
         "descricao": tecnica.descricao,
-        "nivel": tecnica.nivel,
+        "nivel": jsonify(tecnica.nivel),
         "video": tecnica.video,
         "total_comentarios": len(tecnica.comentarios),
         "comentarios": [{"texto": c.texto} for c in tecnica.comentarios]

@@ -33,7 +33,7 @@ def add_tecnica(form: TecnicaSchema):
 
     Devolve uma representação das técnicas e respectivos comentários.
     """
-    Tecnica = Tecnica(
+    tecnica = Tecnica(
         nome=form.nome,
         descricao=form.descricao,
         nivel=form.nivel,
@@ -47,7 +47,8 @@ def add_tecnica(form: TecnicaSchema):
         # efetivando o camando de adição de novo item na tabela
         session.commit()
         logger.debug(f"Adicionado tecnica de nome: '{tecnica.nome}'")
-        return apresenta_tecnica(tecnica), 200
+        #return apresenta_tecnica(tecnica), 200
+        return ""
 
     except IntegrityError as e:
         # como a duplicidade do nome é a provável razão do IntegrityError
@@ -154,7 +155,7 @@ def add_comentario(form: ComentarioSchema):
     if not tecnica:
         # se tecnica não encontrada
         error_msg = "tecnica não encontrada na base :/"
-        logger.warning(f"Erro ao adicionar comentária à tecnica '{tecnica_id}', {error_msg}")
+        logger.warning(f"Erro ao adicionar comentário à tecnica '{tecnica_id}', {error_msg}")
         return {"mesage": error_msg}, 404
 
     # criando o comentário
