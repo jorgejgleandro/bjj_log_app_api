@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
-from model.tecnica import Tecnica, NivelEnum
+from model.tecnica import Tecnica, NivelEnum, PapelEnum
 from flask import jsonify
 
 from schemas import ComentarioSchema
@@ -12,6 +12,7 @@ class TecnicaSchema(BaseModel):
     nome: str = "Chave reta"
     descricao: str = "Chave reta na montada"
     nivel: NivelEnum = "Intermediario"
+    papel: PapelEnum = "Ofensiva"
     video: str = "https://youtu.be/TEV76y9ijHQ?si=rB_qrRT4KaI-lQP2"
 
 
@@ -38,6 +39,7 @@ def apresenta_tecnicas(tecnicas: List[Tecnica]):
             "nome": tecnica.nome,
             "descricao": tecnica.descricao,
             "nivel": tecnica.nivel,
+            "papel": tecnica.papel,
             "video": tecnica.video,
         })
 
@@ -51,6 +53,7 @@ class TecnicaViewSchema(BaseModel):
     nome: str = "Chave Reta"
     descricao: str = "chave reta na montada"
     nivel: NivelEnum = "iniciante"
+    papel: PapelEnum = "Ofensiva"
     video: str = "https://youtu.be/TEV76y9ijHQ?si=rB_qrRT4KaI-lQP2"
     total_comentarios: int = 1
     comentarios:List[ComentarioSchema]
@@ -72,6 +75,7 @@ def apresenta_tecnica(tecnica: Tecnica):
         "nome": tecnica.nome,
         "descricao": tecnica.descricao,
         "nivel": jsonify(tecnica.nivel),
+        "papel": jsonify(tecnica.papel),
         "video": tecnica.video,
         "total_comentarios": len(tecnica.comentarios),
         "comentarios": [{"texto": c.texto} for c in tecnica.comentarios]

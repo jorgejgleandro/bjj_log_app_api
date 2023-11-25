@@ -37,6 +37,7 @@ def add_tecnica(form: TecnicaSchema):
         nome=form.nome,
         descricao=form.descricao,
         nivel=form.nivel,
+        papel=form.papel,
         video=form.video)
     logger.debug(f"Adicionando tecnica chamada: '{tecnica.nome}'")
     try:

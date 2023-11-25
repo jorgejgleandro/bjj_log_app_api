@@ -18,6 +18,17 @@ NivelTipo = Enum(
     values_callable=lambda obj: [item.value for item in obj],
 )
 
+class PapelEnum(PyEnum):
+    OFENSIVA = 'Ofensiva'
+    DEFENSIVA = 'Defensiva'
+
+
+PapelTipo = Enum(
+    PapelEnum,
+    nome="papel_tipo",
+    values_callable=lambda obj: [item.value for item in obj],
+)
+
 
 class Tecnica(Base):
     __tablename__ = 'tecnica'
@@ -26,6 +37,7 @@ class Tecnica(Base):
     nome = Column(String(140), unique=True)
     descricao = Column(String(4000))
     nivel = Column(NivelTipo)
+    papel = Column(PapelTipo)
     video = Column(String)
 
     # Definição do relacionamento entre a tecnica e o comentário.
@@ -34,8 +46,7 @@ class Tecnica(Base):
     # de reconstruir esse relacionamento.
     comentarios = relationship("Comentario")
 
-    def __init__(self, nome:str, descricao:str, nivel:NivelTipo,
-                 video:str):
+    def __init__(self, nome:str, descricao:str, nivel:NivelTipo, papel:PapelTipo, video:str):
         """
         Cria um Tecnica
 
@@ -43,11 +54,13 @@ class Tecnica(Base):
             nome: nome da tecnica.
             descricao: breve texto explicativo sobre a tecnica.
             nivel: um de tres niveis possiveis: iniciante, intermediario ou avancado
+            papel: um de dois papeis possiveis: ofensiva (ataque) ou defensiva (vitima)
             video: url para video demonstrativo
         """
         self.nome = nome
         self.descricao = descricao
         self.nivel = nivel
+        self.papel = papel
         self.video = video
 
 
