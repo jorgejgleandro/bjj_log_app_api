@@ -37,7 +37,6 @@ def add_tecnica(form: TecnicaSchema):
         nome=form.nome,
         descricao=form.descricao,
         nivel=form.nivel,
-        papel=form.papel,
         video=form.video)
     logger.debug(f"Adicionando tecnica chamada: '{tecnica.nome}'")
     try:
@@ -89,7 +88,7 @@ def get_tecnicas():
 
 @app.get('/tecnica', tags=[tecnica_tag],
          responses={"200": TecnicaViewSchema, "404": ErrorSchema})
-def get_tecnica(query: TecnicaBuscaSchema):
+def get_tecnica(query: TecnicaBuscaSchemaPorID):
     """Faz a busca por um tecnica a partir do id da tecnica
 
     Devolve uma representação das tecnicas e respectivos comentários.
@@ -114,7 +113,7 @@ def get_tecnica(query: TecnicaBuscaSchema):
 
 @app.delete('/tecnica', tags=[tecnica_tag],
             responses={"200": TecnicaDelSchema, "404": ErrorSchema})
-def del_tecnica(query: TecnicaBuscaSchema):
+def del_tecnica(query: TecnicaBuscaSchemaPorNome):
     """Remove uma tecnica a partir do nome informado de tecnica
 
     Devolve uma mensagem de confirmação da remoção.
@@ -131,7 +130,7 @@ def del_tecnica(query: TecnicaBuscaSchema):
     if count:
         # Devolve a representação da mensagem de confirmação
         logger.debug(f"Removida tecnica #{tecnica_nome}")
-        return {"mesage": "tecnica removido", "id": tecnica_nome}
+        return {"mesage": "tecnica removido", "nome": tecnica_nome}
     else:
         # se a tecnica não foi encontrada
         error_msg = "tecnica não encontrado no banco de dados :/"
