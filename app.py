@@ -75,7 +75,7 @@ def get_tecnicas():
     # criando conexão com a base
     session = Session()
     # fazendo a busca
-    tecnicas = session.query(tecnica).all()
+    tecnicas = session.query(Tecnica).all()
 
     if not tecnicas:
         # se não há tecnicas cadastradas
@@ -99,7 +99,7 @@ def get_tecnica(query: TecnicaBuscaSchema):
     # criando conexão com a base
     session = Session()
     # fazendo a busca
-    tecnica = session.query(tecnica).filter(tecnica.id == tecnica_id).first()
+    tecnica = session.query(Tecnica).filter(Tecnica.id == tecnica_id).first()
 
     if not tecnica:
         # se a tecnica não foi encontrada
@@ -125,7 +125,7 @@ def del_tecnica(query: TecnicaBuscaSchema):
     # criando conexão com a base
     session = Session()
     # fazendo a remoção
-    count = session.query(tecnica).filter(tecnica.nome == tecnica_nome).delete()
+    count = session.query(Tecnica).filter(Tecnica.nome == tecnica_nome).delete()
     session.commit()
 
     if count:
@@ -151,7 +151,7 @@ def add_comentario(form: ComentarioSchema):
     # criando conexão com a base
     session = Session()
     # fazendo a busca pela tecnica
-    tecnica = session.query(tecnica).filter(tecnica.id == tecnica_id).first()
+    tecnica = session.query(Tecnica).filter(Tecnica.id == tecnica_id).first()
 
     if not tecnica:
         # se tecnica não encontrada

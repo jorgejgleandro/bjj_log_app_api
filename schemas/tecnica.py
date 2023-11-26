@@ -38,8 +38,8 @@ def apresenta_tecnicas(tecnicas: List[Tecnica]):
         result.append({
             "nome": tecnica.nome,
             "descricao": tecnica.descricao,
-            "nivel": tecnica.nivel,
-            "papel": tecnica.papel,
+            "nivel": jsonify(tecnica.nivel),
+            "papel": jsonify(tecnica.papel),
             "video": tecnica.video,
         })
 
