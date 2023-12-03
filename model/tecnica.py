@@ -7,18 +7,6 @@ from typing import Union
 
 from  model import Base, Comentario
 
-class NivelEnum(PyEnum):
-    INICIANTE = 'Iniciante'
-    INTERMEDIARIO = 'Intermediário'
-    AVANCADO = 'Avançado'
-
-NivelTipo = Enum(
-    NivelEnum,
-    nome="nivel_tipo",
-    values_callable=lambda obj: [item.value for item in obj],
-)
-
-
 class Tecnica(Base):
     __tablename__ = 'tecnica'
 
@@ -34,7 +22,7 @@ class Tecnica(Base):
     # de reconstruir esse relacionamento.
     comentarios = relationship("Comentario")
 
-    def __init__(self, nome:str, descricao:str, nivel:NivelTipo, video:str):
+    def __init__(self, nome:str, descricao:str, nivel:str, video:str):
         """
         Cria um Tecnica
 

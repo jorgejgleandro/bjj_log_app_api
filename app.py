@@ -131,7 +131,7 @@ def get_tecnica(query: TecnicaBuscaSchemaPorID):
         logger.warning(f"Erro ao buscar tecnica '{tecnica_id}', {error_msg}")
         return {"mesage": error_msg}, 404
     else:
-        logger.debug(f"tecnica econtrada: '{tecnica.nome}'")
+        logger.debug(f"tecnica encontrada: '{tecnica.nome}'")
         # Devolve a representação de tecnica
         return apresenta_tecnica(tecnica), 200
 
