@@ -25,7 +25,7 @@ class Tecnica(Base):
     id = Column("pk_tecnica", Integer, primary_key=True)
     nome = Column(String(140), unique=True)
     descricao = Column(String(4000))
-    nivel = Column(NivelTipo)
+    nivel = Column(String)
     video = Column(String)
 
     # Definição do relacionamento entre a tecnica e o comentário.

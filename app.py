@@ -85,6 +85,31 @@ def get_tecnicas():
         print(tecnicas)
         return apresenta_tecnicas(tecnicas), 200
 
+@app.get('/tecnicas_por_termo', tags=[tecnica_tag],
+         responses={"200": ListagemTecnicasSchema, "404": ErrorSchema})
+def get_tecnicas_por_termo(query: TecnicaBuscaSchemaPorTermo):
+    """Faz a busca por todas as tecnicas cadastradas que incluem um termo no nome
+
+    Devolve uma representação da listagem de tecnicas.
+    """
+    
+    termo_tecnica = query.nome
+
+    logger.debug(f"Coletando tecnicas ")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    tecnicas = session.query(Tecnica).filter(Tecnica.nome.contains(termo_tecnica)).all()
+
+    if not tecnicas:
+        # se não há tecnicas cadastradas
+        return {"tecnicas": []}, 200
+    else:
+        logger.debug(f"%d tecnicas encontradas" % len(tecnicas))
+        # Devolve a representação de tecnica
+        print(tecnicas)
+        return apresenta_tecnicas(tecnicas), 200
+
 
 @app.get('/tecnica', tags=[tecnica_tag],
          responses={"200": TecnicaViewSchema, "404": ErrorSchema})
@@ -166,7 +191,7 @@ def add_comentario(form: ComentarioSchema):
     tecnica.adiciona_comentario(comentario)
     session.commit()
 
-    logger.debug(f"Adicionado comentário ao tecnica #{tecnica_id}")
+    logger.debug(f"Adicionado comentário aa tecnica #{tecnica_id}")
 
     # Devolve a representação de tecnica
     return apresenta_tecnica(tecnica), 200

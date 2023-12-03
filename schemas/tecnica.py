@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
-from model.tecnica import Tecnica, NivelEnum
-from flask import jsonify
-import jsonpickle
+from model.tecnica import Tecnica
 
 from schemas import ComentarioSchema
 
@@ -12,15 +10,21 @@ class TecnicaSchema(BaseModel):
     """
     nome: str = "Chave reta"
     descricao: str = "Chave reta na montada"
-    nivel: NivelEnum = "Iniciante"
+    nivel: str = "Iniciante"
     video: str = "https://youtu.be/TEV76y9ijHQ?si=rB_qrRT4KaI-lQP2"
 
 
+class TecnicaBuscaSchemaPorTermo(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca. Que será
+        feita apenas com base em um termo no nome da Tecnica.
+    """
+    nome: str = "reta"
+
 class TecnicaBuscaSchemaPorNome(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
-        feita apenas com base no nome do Tecnica.
+        feita apenas com base o nome da Tecnica.
     """
-    nome: str = "Chave reta"
+    nome: str = "Chave Reta"
 
 class TecnicaBuscaSchemaPorID(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
@@ -43,7 +47,7 @@ def apresenta_tecnicas(tecnicas: List[Tecnica]):
         result.append({
             "nome": tecnica.nome,
             "descricao": tecnica.descricao,
-            "nivel": jsonpickle.encode(tecnica.nivel),
+            "nivel": tecnica.nivel,
             "video": tecnica.video,
         })
 
@@ -56,7 +60,7 @@ class TecnicaViewSchema(BaseModel):
     id: int = 1
     nome: str = "Chave Reta"
     descricao: str = "Chave reta na montada"
-    nivel: NivelEnum = "Iniciante"
+    nivel: str = "Iniciante"
     video: str = "https://youtu.be/TEV76y9ijHQ?si=rB_qrRT4KaI-lQP2"
     total_comentarios: int = 1
     comentarios:List[ComentarioSchema]
@@ -77,7 +81,7 @@ def apresenta_tecnica(tecnica: Tecnica):
         "id": tecnica.id,
         "nome": tecnica.nome,
         "descricao": tecnica.descricao,
-        "nivel": jsonpickle.encode(tecnica.nivel),
+        "nivel": tecnica.nivel,
         "video": tecnica.video,
         "total_comentarios": len(tecnica.comentarios),
         "comentarios": [{"texto": c.texto} for c in tecnica.comentarios]
