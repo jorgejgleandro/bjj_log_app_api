@@ -1,7 +1,5 @@
 from sqlalchemy import Column, String, Integer, DateTime, Float
 from sqlalchemy.orm import relationship
-from sqlalchemy.types import Enum
-from enum import Enum as PyEnum
 from datetime import datetime
 from typing import Union
 
@@ -24,7 +22,7 @@ class Tecnica(Base):
 
     def __init__(self, nome:str, descricao:str, nivel:str, video:str):
         """
-        Cria um Tecnica
+        Cadastra uma Tecnica
 
         Arguments:
             nome: nome da tecnica.
