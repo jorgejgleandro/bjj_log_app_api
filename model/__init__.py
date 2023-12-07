@@ -7,6 +7,7 @@ import os
 from model.base import Base
 from model.comentario import Comentario
 from model.tecnica import Tecnica
+from model.aluno import Aluno
 
 db_path = "database/"
 # Verifica se o diretorio não existe
