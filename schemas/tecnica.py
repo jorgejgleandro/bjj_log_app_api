@@ -70,7 +70,7 @@ class TecnicaDelSchema(BaseModel):
     """ Define como deve ser a estrutura do dado retornado após uma requisição
         de remoção.
     """
-    mesage: str
+    mensagem: str
     nome: str
 
 def apresenta_tecnica(tecnica: Tecnica):

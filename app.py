@@ -42,44 +42,44 @@ def add_tecnica(form: TecnicaSchema):
         video=form.video)
     logger.debug(f"Adicionando tecnica chamada: '{tecnica.nome}'")
     try:
-        # criando conexão com a base
+        # Criando conexão com o banco de dados
         session = Session()
-        # adicionando tecnica
+        # Adicionando tecnica
         session.add(tecnica)
-        # efetivando o camando de adição de novo item na tabela
+        # Efetivando o comando de adição de novo item na tabela
         session.commit()
-        logger.debug(f"Adicionado tecnica de nome: '{tecnica.nome}'")
+        logger.debug(f"Adicionada tecnica de nome: '{tecnica.nome}'")
         #return apresenta_tecnica(tecnica), 200
         return ""
 
     except IntegrityError as e:
-        # como a duplicidade do nome é a provável razão do IntegrityError
-        error_msg = "tecnica de mesmo nome já salva na base :/"
+        # A duplicidade do nome é a provável razão do IntegrityError
+        error_msg = "Tecnica de mesmo nome já salva na base :/"
         logger.warning(f"Erro ao adicionar tecnica '{tecnica.nome}', {error_msg}")
-        return {"mesage": error_msg}, 409
+        return {"mensagem": error_msg}, 409
 
     except Exception as e:
-        # caso um erro fora do previsto
+        # Caso ocorra um erro fora do previsto
         error_msg = "Não foi possível salvar novo item :/"
         logger.warning(f"Erro ao adicionar tecnica '{tecnica.nome}', {error_msg}")
-        return {"mesage": error_msg}, 400
+        return {"mensagem": error_msg}, 400
 
 
 @app.get('/tecnicas', tags=[tecnica_tag],
          responses={"200": ListagemTecnicasSchema, "404": ErrorSchema})
 def get_tecnicas():
-    """Faz a busca por todas as tecnicas cadastradas
+    """Realiza busca por todas as tecnicas cadastradas no banco de dados
 
     Devolve uma representação da listagem de tecnicas.
     """
     logger.debug(f"Coletando tecnicas ")
-    # criando conexão com a base
+    # Criando conexão com a base
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     tecnicas = session.query(Tecnica).all()
 
     if not tecnicas:
-        # se não há tecnicas cadastradas
+        # Se não houver tecnicas cadastradas
         return {"tecnicas": []}, 200
     else:
         logger.debug(f"%d tecnicas encontradas" % len(tecnicas))
@@ -90,7 +90,7 @@ def get_tecnicas():
 @app.get('/tecnicas_por_termo', tags=[tecnica_tag],
          responses={"200": ListagemTecnicasSchema, "404": ErrorSchema})
 def get_tecnicas_por_termo(query: TecnicaBuscaSchemaPorTermo):
-    """Faz a busca por todas as tecnicas cadastradas que incluem um termo no nome
+    """Realiza busca por todas as tecnicas cadastradas que incluem um termo no nome
 
     Devolve uma representação da listagem de tecnicas.
     """
@@ -98,13 +98,13 @@ def get_tecnicas_por_termo(query: TecnicaBuscaSchemaPorTermo):
     termo_tecnica = query.nome
 
     logger.debug(f"Coletando tecnicas ")
-    # criando conexão com a base
+    # Criando conexão com a base
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     tecnicas = session.query(Tecnica).filter(Tecnica.nome.contains(termo_tecnica)).all()
 
     if not tecnicas:
-        # se não há tecnicas cadastradas
+        # Se não houver tecnicas cadastradas
         return {"tecnicas": []}, 200
     else:
         logger.debug(f"%d tecnicas encontradas" % len(tecnicas))
@@ -116,22 +116,22 @@ def get_tecnicas_por_termo(query: TecnicaBuscaSchemaPorTermo):
 @app.get('/tecnica', tags=[tecnica_tag],
          responses={"200": TecnicaViewSchema, "404": ErrorSchema})
 def get_tecnica(query: TecnicaBuscaSchemaPorID):
-    """Faz a busca por um tecnica a partir do id da tecnica
+    """Realiza a busca por uma tecnica a partir do id da tecnica
 
     Devolve uma representação das tecnicas e respectivos comentários.
     """
     tecnica_id = query.id
     logger.debug(f"Coletando dados sobre tecnica #{tecnica_id}")
-    # criando conexão com a base
+    # Criando conexão com o banco de dados
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     tecnica = session.query(Tecnica).filter(Tecnica.id == tecnica_id).first()
 
     if not tecnica:
-        # se a tecnica não foi encontrada
-        error_msg = "tecnica não encontrada no banco de dados :/"
+        # Se a tecnica não foi encontrada
+        error_msg = "Tecnica não encontrada no banco de dados :/"
         logger.warning(f"Erro ao buscar tecnica '{tecnica_id}', {error_msg}")
-        return {"mesage": error_msg}, 404
+        return {"mensagem": error_msg}, 404
     else:
         logger.debug(f"tecnica encontrada: '{tecnica.nome}'")
         # Devolve a representação de tecnica
@@ -147,22 +147,22 @@ def del_tecnica(query: TecnicaBuscaSchemaPorNome):
     """
     tecnica_nome = unquote(unquote(query.nome))
     print(tecnica_nome)
-    logger.debug(f"Deletando dados sobre tecnica #{tecnica_nome}")
-    # criando conexão com a base
+    logger.debug(f"Removendo dados sobre tecnica #{tecnica_nome}")
+    # Criando conexão com a base
     session = Session()
-    # fazendo a remoção
+    # Realizando a remoção
     count = session.query(Tecnica).filter(Tecnica.nome == tecnica_nome).delete()
     session.commit()
 
     if count:
         # Devolve a representação da mensagem de confirmação
         logger.debug(f"Removida tecnica #{tecnica_nome}")
-        return {"mesage": "tecnica removido", "nome": tecnica_nome}
+        return {"mensagem": "tecnica removido", "nome": tecnica_nome}
     else:
         # se a tecnica não foi encontrada
         error_msg = "tecnica não encontrado no banco de dados :/"
         logger.warning(f"Erro ao remover tecnica #'{tecnica_nome}', {error_msg}")
-        return {"mesage": error_msg}, 404
+        return {"mensagem": error_msg}, 404
 
 
 @app.post('/comentario', tags=[comentario_tag],
@@ -174,26 +174,26 @@ def add_comentario(form: ComentarioSchema):
     """
     tecnica_id  = form.tecnica_id
     logger.debug(f"Adicionando comentários à tecnica #{tecnica_id}")
-    # criando conexão com a base
+    # Criando conexão com a base
     session = Session()
-    # fazendo a busca pela tecnica
+    # Realizando a busca pela tecnica
     tecnica = session.query(Tecnica).filter(Tecnica.id == tecnica_id).first()
 
     if not tecnica:
-        # se tecnica não encontrada
+        # Se tecnica não foi encontrada
         error_msg = "tecnica não encontrada na base :/"
         logger.warning(f"Erro ao adicionar comentário à tecnica '{tecnica_id}', {error_msg}")
-        return {"mesage": error_msg}, 404
+        return {"mensagem": error_msg}, 404
 
-    # criando o comentário
+    # Criando o comentário
     texto = form.texto
     comentario = Comentario(texto)
 
-    # adicionando o comentário à tecnica
+    # Adicionando o comentário à tecnica
     tecnica.adiciona_comentario(comentario)
     session.commit()
 
-    logger.debug(f"Adicionado comentário aa tecnica #{tecnica_id}")
+    logger.debug(f"Adicionado comentário à tecnica #{tecnica_id}")
 
     # Devolve a representação de tecnica
     return apresenta_tecnica(tecnica), 200
@@ -215,48 +215,46 @@ def add_aluno(form: AlunoSchema):
         graduacao=form.graduacao
         )
 
-    print(f'in post add_aluno aluno: ${aluno}')
-
     logger.debug(f"Adicionando aluno chamado: '{aluno.nome}'")
     try:
-        # criando conexão com a base
+        # Criando conexão com o banco de dados
         session = Session()
-        # adicionando aluno
+        # Adicionando aluno
         session.add(aluno)
-        # efetivando o comando de adição de novo item na tabela
+        # Efetivando o comando de adição de novo item na tabela
         session.commit()
         logger.debug(f"Adicionado aluno de nome: '{aluno.nome}'")
         return ""
 
     except IntegrityError as e:
-        # como a duplicidade do nome é a provável razão do IntegrityError
-        error_msg = "aluno de mesmo nome já salva na base :/"
+        # A duplicidade do nome é a provável razão do IntegrityError
+        error_msg = "Aluno de mesmo nome já salvo na base :/"
         logger.warning(f"Erro ao adicionar aluno '{aluno.nome}', {error_msg}")
-        return {"mesage": error_msg}, 409
+        return {"mensagem": error_msg}, 409
 
     except Exception as e:
-        # caso um erro fora do previsto
+        # Caso ocorra um erro fora do previsto
         error_msg = "Não foi possível salvar novo item :/"
         logger.warning(f"Erro ao adicionar aluno '{aluno.nome}', {error_msg}")
-        return {"mesage": error_msg}, 400
+        return {"mensagem": error_msg}, 400
 
 
 
 @app.get('/alunos', tags=[aluno_tag],
         responses={"200": ListagemAlunosSchema, "404": ErrorSchema})
 def get_alunos():
-    """Faz a busca por todos os alunos cadastrados
+    """Realiza a busca por todos os alunos cadastrados
 
     Devolve uma representação da listagem de alunos.
     """
     logger.debug(f"Coletando alunos ")
-    # criando conexão com a base
+    # Criando conexão com a base
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     alunos = session.query(Aluno).all()
 
     if not alunos:
-        # se não há alunos cadastrados
+        # Se não houver alunos cadastrados
         return {"alunos": []}, 200
     else:
         logger.debug(f"%d alunos encontrados" % len(alunos))
@@ -269,7 +267,7 @@ def get_alunos():
 @app.get('/alunos_por_termo', tags=[aluno_tag],
          responses={"200": ListagemAlunosSchema, "404": ErrorSchema})
 def get_alunos_por_termo(query: AlunoBuscaSchemaPorTermo):
-    """Faz a busca por todas os alunos cadastrados que incluem um termo no nome
+    """Realiza a busca por todas os alunos cadastrados que incluem um termo no nome
 
     Devolve uma representação da listagem de alunos.
     """
@@ -277,13 +275,13 @@ def get_alunos_por_termo(query: AlunoBuscaSchemaPorTermo):
     termo_aluno = query.nome
 
     logger.debug(f"Coletando tecnicas ")
-    # criando conexão com a base
+    # Criando conexão com a base
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     alunos = session.query(Tecnica).filter(Aluno.nome.contains(termo_aluno)).all()
 
     if not alunos:
-        # se não há alunos cadastrados
+        # Se não houver alunos cadastrados
         return {"alunos": []}, 200
     else:
         logger.debug(f"%d alunos encontrados" % len(alunos))
@@ -296,24 +294,24 @@ def get_alunos_por_termo(query: AlunoBuscaSchemaPorTermo):
 @app.get('/aluno', tags=[aluno_tag],
          responses={"200": AlunoViewSchema, "404": ErrorSchema})
 def get_aluno(query: AlunoBuscaSchemaPorID):
-    """Faz a busca por um aluno a partir do id do aluno
+    """Realiza a busca por um aluno a partir do id do aluno
 
     Devolve uma representação dos alunos e respectivos comentários.
     """
     aluno_id = query.id
     logger.debug(f"Coletando dados sobre aluno #{aluno_id}")
-    # criando conexão com a base
+    # Criando conexão com o banco de dados
     session = Session()
-    # fazendo a busca
+    # Realizando a busca
     tecnica = session.query(Aluno).filter(Aluno.id == aluno_id).first()
 
     if not aluno:
-        # se o aluno não foi encontrado
-        error_msg = "aluno não encontrado no banco de dados :/"
+        # Se o aluno não foi encontrado
+        error_msg = "Aluno não encontrado no banco de dados :/"
         logger.warning(f"Erro ao buscar aluno '{tecnico_id}', {error_msg}")
-        return {"mesage": error_msg}, 404
+        return {"mensagem": error_msg}, 404
     else:
-        logger.debug(f"aluno encontrado: '{aluno.nome}'")
+        logger.debug(f"Aluno encontrado: '{aluno.nome}'")
         # Devolve a representação de aluno
         return apresenta_aluno(aluno), 200
 
@@ -329,18 +327,18 @@ def del_aluno(query: AlunoBuscaSchemaPorNome):
     aluno_nome = unquote(unquote(query.aluno))
     print(aluno_nome)
     logger.debug(f"Deletando dados sobre aluno #{aluno_nome}")
-    # criando conexão com a base
+    # Criando conexão com o banco de dados
     session = Session()
-    # fazendo a remoção
+    # Efetuando a remoção
     count = session.query(Aluno).filter(Aluno.nome == aluno_nome).delete()
     session.commit()
 
     if count:
         # Devolve a representação da mensagem de confirmação
         logger.debug(f"Removido aluno #{aluno_nome}")
-        return {"mesage": "aluno removido", "nome": aluno_nome}
+        return {"mensagem": "aluno removido", "nome": aluno_nome}
     else:
-        # se o aluno não foi encontrado
-        error_msg = "aluno não encontrado no banco de dados :/"
+        # Se o aluno não foi encontrado
+        error_msg = "Aluno não encontrado no banco de dados :/"
         logger.warning(f"Erro ao remover aluno #'{aluno_nome}', {error_msg}")
-        return {"mesage": error_msg}, 404
+        return {"mensagem": error_msg}, 404

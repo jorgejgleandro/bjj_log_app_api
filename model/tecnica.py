@@ -28,7 +28,7 @@ class Tecnica(Base):
             nome: nome da tecnica.
             descricao: breve texto explicativo sobre a tecnica.
             nivel: um de tres niveis possiveis: iniciante, intermediario ou avancado
-            video: url para video demonstrativo
+            video: url externa para video demonstrativo ou nome de arquivo local
         """
         self.nome = nome
         self.descricao = descricao
