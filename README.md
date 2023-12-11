@@ -27,6 +27,11 @@ Faça uma cópia desse repositório para sua máquina local, preferencialmente c
 ```
 git clone git@github.com:jorgejgleandro/bjj_log_app_api.git
 ```
+Acesse a **branch** *master* do repositório:
+
+```
+git checkout master
+```
 
 Uma vez clonado esse repositório, acesse seu diretório raiz, via terminal, para executar os seguintes comandos.
 
